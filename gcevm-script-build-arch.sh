@@ -16,11 +16,11 @@
 # Build an Arch Linux image from within a GCE Debian VM.
 
 BUILDER_ROOT=/mnt/archongce/source
-INSTANCE_NAME=$(/usr/share/google/get_metadata_value attributes/instance-name)
-ZONE_NAME=$(/usr/share/google/get_metadata_value attributes/instance-zone)
-SCRIPT_PARAMS=$(/usr/share/google/get_metadata_value attributes/script-params)
+INSTANCE_NAME=$(curl -s -H 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/instance/name)
+ZONE_NAME=$(curl -s -H 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/instance/zone | cut -d / -f 4)
+SCRIPT_PARAMS=$(curl -s -H 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/instance/attributes/script-params)
 SCRIPT_PARAMS="--verbose --register ${SCRIPT_PARAMS}"
-GIT_SOURCE_URI=$(/usr/share/google/get_metadata_value attributes/git-source-uri)
+GIT_SOURCE_URI=$(curl -s -H 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/instance/attributes/git-source-uri)
 REMOTE_IMAGE=$(echo "i = '${SCRIPT_PARAMS}'.split(); print i[i.index('--upload') + 1]" | python)
 
 echo "Builder Root: ${BUILDER_ROOT}"

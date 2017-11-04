@@ -79,4 +79,4 @@ else
 fi
 
 gsutil cp builder.log ${REMOTE_IMAGE}.log
-gcloud compute -q instances delete ${INSTANCE_NAME} --zone ${ZONE_NAME}
+# gcloud compute -q instances delete ${INSTANCE_NAME} --zone ${ZONE_NAME}

@@ -46,16 +46,13 @@ function PrintHelp() {
 function DeployVm() {
   echo "Creating Instance, ${INSTANCE_NAME}"
   gcloud compute instances create ${INSTANCE_NAME} \
-    --image ubuntu-14-10 \
+    --image "ubuntu-1404-trusty-v20171101" --image-project "ubuntu-os-cloud" \
     --machine-type ${MACHINE_TYPE} \
     --zone ${ZONE_NAME} \
     --metadata-from-file startup-script=gcevm-script-build-arch.sh \
     --metadata \
-    script-params="${SCRIPT_PARAMS}" \
-    instance-name="${INSTANCE_NAME}" \
-    instance-zone="${ZONE_NAME}" \
-    git-source-uri="${GIT_SOURCE_URI}" \
-    --scopes compute-rw storage-full
+    script-params="${SCRIPT_PARAMS}",instance-name="${INSTANCE_NAME}",instance-zone="${ZONE_NAME}",git-source-uri="${GIT_SOURCE_URI}" \
+    --scopes compute-rw,storage-full
   echo "You can monitor progress of the build via:"
   echo "  gcloud compute instances get-serial-port-output ${INSTANCE_NAME} --zone ${ZONE_NAME} | grep startupscript"
 }
